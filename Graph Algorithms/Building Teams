@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void init_code() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+}
+void dfs(int i, vector<int> v[], vector<int>& vis, int &can){
+    for(auto &x : v[i]){
+        if(vis[x] != -1){
+            if(vis[x] == vis[i]) can = 0;
+        }
+        else{
+            vis[x] = (!vis[i]);
+            dfs(x,v,vis,can);
+        }
+    }
+}
+int main() {
+    init_code();    
+    int n,m; cin >> n >> m;
+    vector<int> v[n+1];
+    for(int i = 0; i < m; i++){
+        int x,y; cin >> x >> y;
+        v[x].push_back(y);
+        v[y].push_back(x);
+    }
+    vector<int> vis(n+1,-1);
+    int can = 1;
+    for(int i = 1; i <= n; ++i){
+        if(vis[i] == -1){
+            vis[i] = 1;
+            dfs(i,v,vis,can);
+        }
+    }
+    if(can){
+        for(int i = 1; i <= n; i++){
+            cout << vis[i] + 1 << " ";
+        }
+    }
+    else{
+        cout << "IMPOSSIBLE";
+    }
+}
+// similar to bipartite graph problem
